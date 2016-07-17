@@ -1,7 +1,6 @@
 /*
      This Program reads in the file venmo-trans.txt calculates a rolling median based on a 60 second window from the maximum timestamp present
      and prints a graph of the transactions in order.
-
 */
 
 import java.io.File;
@@ -52,7 +51,7 @@ public class median_degree
        Actors.add(Actor);
        Targets.add(Target);
     }
-       created_time = TimeReader(created_time);
+       created_time = TimeReader(created_time);                        
        ArrayList<Double> Medians = OrderTransactions(created_time, Actors, Targets);
        for(int i = 0; i < Medians.size(); i++)
          out.printf("%.2f \n", Medians.get(i));
@@ -60,7 +59,7 @@ public class median_degree
     in.close();                                       //Closes Scanner File
     out.close();                                      //Closes PrintWriter File
   }
- 
+  //Reads in a TimeStamp String and stores it in a usable form in this case a string of seconds
   public static ArrayList<String> TimeReader(ArrayList<String> created_time) 
   {
     ArrayList<String> CalculatedTime = new ArrayList<String>();
@@ -80,7 +79,8 @@ public class median_degree
     }    
     return CalculatedTime;
   }
-  
+
+  //Processes a TimeStamp into a mathematical quantity to be used in Analysis (i.e. total seconds from a defined basis) 
   public static String TimeProcessor(int year, int month, int day, int hour, int minute, int second, int basis)
   {
     int CalculatedTime = ((basis % 4) == 0) ? 366 : 365;
@@ -95,7 +95,8 @@ public class median_degree
   
     return Integer.toString(((((((CalculatedTime + (day - 1)) * 24) + hour) * 60) + minute) * 60) + second);
   }
-
+  
+  //Organizes Transactions based on the TimeStamp
   public static ArrayList<Double> OrderTransactions(ArrayList<String> created_time, ArrayList<String> Actors, ArrayList<String> Targets)
   { 
     ArrayList<Double> Medians = new ArrayList<Double>();
@@ -120,7 +121,7 @@ public class median_degree
     }
     return Medians;
   }
- 
+  //Eliminates Transactions outside of the 60 second window
   public static Double ScaledTransactions(ArrayList<String> created_time, ArrayList<String> Actors, ArrayList<String> Targets, int Transaction)
   {
     int i = 0;
@@ -139,7 +140,7 @@ public class median_degree
      }
    return Analyzer(Actors, Targets, Transaction);
   }
-  
+  //Generates Graph and Calculates Degrees to compute Rolling Median
   public static Double Analyzer(ArrayList<String> actors, ArrayList<String> targets, int Transaction)
   {
    ArrayList<String>  UniqueName = new ArrayList<String>();
@@ -166,7 +167,7 @@ public class median_degree
     }
     return median(Degrees);
   }
-
+  //Calculates the median per a transaction
   public static Double median(ArrayList<Integer> Degrees)
   {
     Integer[] SortedDegrees = Degrees.toArray(new Integer[Degrees.size()]);
